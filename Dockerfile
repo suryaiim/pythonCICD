@@ -1,10 +1,10 @@
 FROM python:3.10.6-buster
 
 ARG GID=1000
-ARG YID=1000
+ARG UID=1000
 
 # Copy our program in, owned by the docker user
-COPY --chown=docker:dockre src /app
+COPY --chown=docker:docker src /app
 WORKDIR /app
 
 ENV PYTHONPATH=$PYTHONPATH:/app

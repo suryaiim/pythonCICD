@@ -2,10 +2,10 @@
 import pytest
 from wallet import Wallet, InsufficientAmount
 
-@pytest.fixtre
+@pytest.fixture
 def my_wallet():
     '''Returns a Wallet instance with a zero balance'''
-    return Wallet(1)
+    return Wallet(0)
 
 
 def test_default_initial_amount(my_wallet):
