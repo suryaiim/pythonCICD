@@ -1,0 +1,12 @@
+*.pyc
+*.Rhistory
+*.DS_*
+*.Rproj
+*.Rproj.user
+*venv
+*.csv
+*.pkl
+*.db
+.env
+__py*
+*.ipynb_checkpoints

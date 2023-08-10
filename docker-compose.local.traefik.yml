@@ -1,0 +1,20 @@
+version: "3.6"
+
+networks:
+    frontend:
+        external: true
+        name: ${FRONTEND_NETWORK_NAME:?frontend_network_name}
+
+
+services:
+    api:
+        image: ${DOCKER_REPO:?docker_repo}/${IMAGE_NAME:?image_name}:${IMAGE_VERSION:?image_version}
+        labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=${FRONTEND_NETWORK_NAME:?frontend_network_name}"
+            #- "traefik.port=${INTERNAL_APP_PORT:?internal_app_port}"
+            - "traefik.port=80"
+
+            - "traefik.http.routers.api.rule=Host(`api.localhost`) && PathPrefix(`${MOUNTPOINT:?mountpoint}`)"
+            - "traefik.http.routers.api.tls=true"
+            - "traefik.http.routers.api.entrypoints=websecure"

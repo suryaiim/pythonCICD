@@ -1,0 +1,22 @@
+#----- Docker params
+REPO=testnamespace
+IMAGE_NAME=test_api
+IMAGE_NAME_DEV=test_api_dev
+IMAGE_VERSION=latest
+
+INTERNAL_APP_PORT=80
+#only used by dev
+EXTERNAL_APP_PORT=80
+
+STACK_NAME=devopstest
+ENVIRONMENT=prod
+MOUNTPOINT=/testapi
+SUBMOUNT_URL=
+FRONTEND_NETWORK_NAME=frontend
+WTF_CSRF_SECRET_KEY=abc
+SECRET_KEY=abc
+DOCKER_REPO=thistest
+#----- Docker params
+INTERNAL_APP_PORT=80
+#only used by dev
+EXTERNAL_APP_PORT=80

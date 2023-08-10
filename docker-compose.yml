@@ -1,0 +1,86 @@
+version: "3.8"
+
+networks:
+    frontend:
+        external: true
+        name: ${FRONTEND_NETWORK_NAME:?frontend_network_name}
+    api:
+      name: api
+
+#Note the labels here are not part of the test. 
+#You should not need to change them
+x-service-traefik-frontend: &service-traefik-frontend
+    labels:
+        - "traefik.enable=true" 
+        - "traefik.docker.network=frontend"
+        - "traefik.http.routers.rtr_devopstestapi.rule=Host(`testapi.localhost`)"
+        - "traefik.http.routers.rtr_devopstestapi.middlewares=auth"
+        - "traefik.http.routers.rtr_devopstestapi.entrypoints=websecure"
+        - "traefik.http.routers.rtr_devopstestapi.tls=true"
+
+        - "traefik.http.routers.rtr_devopstestapi.service=svc_devopstestapi"
+        - "traefik.http.services.svc_devopstestapi.loadbalancer.server.port=80"
+
+
+services:
+    api:
+        image: ${DOCKER_REPO:?docker_repo}/${IMAGE_NAME:?image_name}:${IMAGE_VERSION:?image_version}
+        networks:
+            - api
+        environment:
+            ENVIRONMENT: ${ENVIRONMENT:?environment}
+            APP_PORT: ${INTERNAL_APP_PORT:?internal_app_port}
+            API_VERSION: ${API_VERSION:-0.1}
+            #mountpoint always has a leading slash
+            MOUNTPOINT: ${MOUNTPOINT:?mountpoint}
+            SUBMOUNT_URL: ${SUBMOUNT_URL} #[dev, uat, ''] missing implies prod!
+            SESSION_COOKIE_NAME: my_test_cookie
+
+            WTF_CSRF_SECRET_KEY: ${WTF_CSRF_SECRET_KEY:?wtf_csrf_secret_key}
+            SECRET_KEY: ${SECRET_KEY:?secret_key}
+
+        restart: unless-stopped
+
+        #Labels
+        <<: *service-traefik-frontend
+
+        logging:
+            driver: "json-file"
+            options:
+                max-file: "5"
+                max-size: "10m"
+ 
+        deploy:
+            mode: replicated
+            replicas: 1
+            restart_policy:
+                condition: any
+                delay: 30s
+                max_attempts: 0
+            placement:
+                constraints:
+                    - node.role == worker
+            update_config:
+                delay: 2s
+            #Labels for swarm mode deployments
+            <<: *service-traefik-frontend
+
+
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:${INTERNAL_APP_PORT:?internal_app_port}${MOUNTPOINT:?mountpoint}${SUBMOUNT_URL}/status"]
+            interval: 30s
+            timeout: 10s
+            retries: 3
+            start_period: 3s
+
+        command: [  "gunicorn", "--preload", 
+                        "-w", "3", 
+                        "--config", "gunicorn_config.py",
+                        "--worker-tmp-dir", "/dev/shm", #use shm as the worker lock-file dir or we will have to wait for io
+                        "--worker-class", "gevent", 
+                        "-b", "0.0.0.0:${INTERNAL_APP_PORT:?internal_app_port}", 
+                        "--logger-class", "logger.CustomLogger",
+                        "--access-logfile", "-",
+                        "--log-file", "-", #all logs to stdout
+                        "wsgigunicorn:app" ]
+
