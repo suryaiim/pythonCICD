@@ -76,7 +76,7 @@ services:
     volumes:
       - ./prometheus/:/etc/prometheus/
     networks:
-      - backend
+      - frontend
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
