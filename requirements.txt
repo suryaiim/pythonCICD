@@ -1,7 +1,8 @@
-Werkzeug==1.0.1
-flask==1.1.1
-flask-restplus==0.13.0
+Werkzeug==0.16.1
+flask
+flask-restplus
 datetime
-pytest==7.4.0
-gunicorn==20.1.0
-gevent==21.12
+pytest
+gunicorn
+gevent
+markupsafe==2.0.1
