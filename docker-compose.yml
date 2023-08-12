@@ -26,12 +26,16 @@ services:
         image: ${DOCKER_REPO:?docker_repo}/${IMAGE_NAME:?image_name}:${IMAGE_VERSION:?image_version}
         networks:
             - api
+            - frontend
         labels:
-          - "traefik.enable=true"
-          - "traefik.http.routers.wallet.rule=Host(`wallet.localhost`)"
-          - "traefik.http.routers.wallet.middlewares=auth"
-          - "traefik.http.routers.wallet.entrypoints=websecure"
-          - "traefik.http.routers.wallet.tls=true"
+          - "traefik.enable=true" 
+          - "traefik.docker.network=frontend"
+          - "traefik.http.routers.rtr_devopstestapi.rule=Host(`wallet.localhost`)"
+          - "traefik.http.routers.rtr_devopstestapi.middlewares=auth"
+          - "traefik.http.routers.rtr_devopstestapi.entrypoints=websecure"
+          - "traefik.http.routers.rtr_devopstestapi.tls=true"
+          - "traefik.http.routers.rtr_devopstestapi.service=svc_devopstestapi"
+          - "traefik.http.services.svc_devopstestapi.loadbalancer.server.port=80"
         environment:
             ENVIRONMENT: ${ENVIRONMENT:?environment}
             APP_PORT: ${INTERNAL_APP_PORT:?internal_app_port}
