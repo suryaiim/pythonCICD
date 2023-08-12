@@ -14,3 +14,19 @@ class Wallet(Resource):
 
     def get(self):
         return "Wallet contains {}".format(wallet)
+
+@ns_wallet.route("/add")
+class WalletAddFunds(Resource):
+    def post(self):
+        json = request.get_json()
+        amount = json.get('amount')
+        wallet.add_cash(amount)
+        return{'balance': wallet.balance}
+
+@ns_wallet.route("/remove")
+class WalletRemoveFunds(Resource):
+    def post(self):
+     json = request.get_json()
+     amount = json.get('amount')
+     wallet.spend_cash(amount)
+     return{'balance': wallet.balance}
