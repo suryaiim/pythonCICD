@@ -16,6 +16,7 @@ services:
     image: "traefik:v2.8"
     networks:
       - frontend
+      - backend
     command:
       - "--log.level=INFO"
       - "--api=true"
