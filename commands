@@ -53,4 +53,4 @@ sudo lsof -i -P -n | grep LISTEN
 
 https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-darwin-x86_64
 
-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
+
