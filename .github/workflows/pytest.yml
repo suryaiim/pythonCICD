@@ -11,4 +11,5 @@ jobs:
       - name: sourcing virtual.sh file
         run: source virtual.sh
       - name: Running pytest
-        run: make  unit_test_python
+        run: pwd && ls
+        run: make unit_test_python
