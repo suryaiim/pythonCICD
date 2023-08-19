@@ -6,7 +6,13 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
-      - name: Install dependencies
-        run: sudo apt-get install make -y
       - name: sourcing virtual.sh file
         run: source virtual.sh && make unit_test_python
+  dockertest:
+    needs: pytest
+    runs-on : ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Run docker build
+        run: make unit_test_docker
