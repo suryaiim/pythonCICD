@@ -9,7 +9,4 @@ jobs:
       - name: Install dependencies
         run: sudo apt-get install make -y
       - name: sourcing virtual.sh file
-        run: source virtual.sh
-      - name: Running pytest
-        run: pwd && ls
-        run: make unit_test_python
+        run: source virtual.sh && make unit_test_python
