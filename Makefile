@@ -34,5 +34,5 @@ unit_test_python:
 	pytest -p no:cacheprovider src/test
 
 unit_test_docker: build
-	docker run -it ${DOCKER_REPO}/${IMAGE_NAME}:${IMAGE_VERSION} pytest -p no:cacheprovider ./test
+	docker run -i ${DOCKER_REPO}/${IMAGE_NAME}:${IMAGE_VERSION} pytest -p no:cacheprovider ./test
 
