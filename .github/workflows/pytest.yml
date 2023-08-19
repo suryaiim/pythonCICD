@@ -1,0 +1,14 @@
+name: pytest
+on : workflow_dispatch
+jobs:
+  pytest:
+    runs-on : ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: sudo apt-get install make -y
+      - name: sourcing virtual.sh file
+        run: source virtual.sh
+      - name: Running pytest
+        run: make  unit_test_python
