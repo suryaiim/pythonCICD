@@ -41,7 +41,7 @@ services:
             APP_PORT: ${INTERNAL_APP_PORT:?internal_app_port}
             API_VERSION: ${API_VERSION:-0.1}
             #mountpoint always has a leading slash
-            MOUNTPOINT: ${MOUNTPOINT:?mountpoint}
+            MOUNTPOINT: ${MOUNTPOINT}
             SUBMOUNT_URL: ${SUBMOUNT_URL} #[dev, uat, ''] missing implies prod!
             SESSION_COOKIE_NAME: my_test_cookie
 
@@ -76,7 +76,7 @@ services:
 
 
         healthcheck:
-            test: ["CMD", "curl", "-f", "http://localhost:${INTERNAL_APP_PORT:?internal_app_port}${MOUNTPOINT:?mountpoint}${SUBMOUNT_URL}/status"]
+            test: ["CMD", "curl", "-f", "http://localhost:${INTERNAL_APP_PORT:?internal_app_port}${SUBMOUNT_URL}/status"]
             interval: 30s
             timeout: 10s
             retries: 3

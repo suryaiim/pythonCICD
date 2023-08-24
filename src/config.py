@@ -27,7 +27,7 @@ class Config(BaseRepr):
     APPLICATION_ROOT = MOUNTPOINT + SUBMOUNT_URL
 
     assert APPLICATION_ROOT != None
-    assert APPLICATION_ROOT != ''
+    #assert APPLICATION_ROOT != ''
 
     SESSION_COOKIE_NAME = os.getenv('SESSION_COOKIE_NAME', 'session_test')
     API_VERSION = os.getenv('API_VERSION', '0.1')
